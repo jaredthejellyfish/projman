@@ -49,7 +49,7 @@ export function initDB() {
         .all() as { name: string }[];
 
       const doesProjectsExist = tables.some(
-        (table) => table.name === "projects"
+        (table) => table.name === "projects",
       );
 
       if (!doesProjectsExist) {
@@ -61,7 +61,7 @@ export function initDB() {
       initial: "Initializing database",
       success: "Database initialized",
       fail: "Failed to initialize database",
-    }
+    },
   );
 }
 
@@ -72,7 +72,7 @@ export function getDBProjects(db: Database) {
       initial: "Fetching db projects",
       success: "DB projects fetched",
       fail: "Failed to fetch db projects",
-    }
+    },
   );
 }
 
@@ -84,13 +84,17 @@ export function closeDB(db: Database) {
   });
 }
 
-export async function addProjectToDB(project: GHRepo, db: Database) {
+export async function addProjectToDB(
+  project: GHRepo,
+  db: Database,
+  force: boolean = false,
+) {
   try {
-    const path = await resolveProjectPath(project);
+    const path = await resolveProjectPath(project, force);
 
     if (!path) {
       console.error(
-        `⚠️ Failed to resolve path for project ${project.name}. Skipping...`
+        `⚠️ Failed to resolve path for project ${project.name}. Skipping...`,
       );
       return;
     }
@@ -108,7 +112,7 @@ export async function addProjectToDB(project: GHRepo, db: Database) {
     });
   } catch (error) {
     console.error(
-      `⚠️ Failed to add project ${project.name} to db. Skipping...`
+      `⚠️ Failed to add project ${project.name} to db. Skipping...`,
     );
     if (process.env.DEBUG === "true") {
       console.error(error);
