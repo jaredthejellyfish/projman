@@ -1,7 +1,6 @@
 import { closeDB, getDBProjects, initDB } from "./db";
 import { getGitHubRepos, getGitHubUser } from "./gh";
 import { diffDbAndRepos, reconcileDBWithGitHub } from "./util";
-import { select, Separator } from '@inquirer/prompts';
 
 process.env.DEBUG = "true";
 
